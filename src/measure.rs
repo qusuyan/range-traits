@@ -1,5 +1,6 @@
 use core::{
 	mem,
+	num::NonZero,
 	ops::{Add, Sub},
 };
 
@@ -232,3 +233,28 @@ mod ordered_float {
 		unsafe { NotNan::new_unchecked(f64::INFINITY) }
 	);
 }
+
+macro_rules! impl_nonzero_measure {
+	($ty:ty) => {
+		impl Measure for NonZero<$ty> {
+			type Len = <$ty as Measure>::Len;
+
+			fn len(&self) -> Self::Len {
+				<$ty as Measure>::len(&self.get())
+			}
+
+			fn distance(&self, other: &Self) -> Self::Len {
+				<$ty as Measure>::distance(&self.get(), &other.get())
+			}
+		}
+	};
+}
+
+impl_nonzero_measure!(u8);
+impl_nonzero_measure!(u16);
+impl_nonzero_measure!(u32);
+impl_nonzero_measure!(u64);
+impl_nonzero_measure!(i8);
+impl_nonzero_measure!(i16);
+impl_nonzero_measure!(i32);
+impl_nonzero_measure!(i64);
