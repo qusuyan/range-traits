@@ -89,6 +89,7 @@ macro_rules! impl_nonzero {
 
 use core::num::{NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize};
 
+// Only implement for unsigned non-zero types, since enumerating signed non-zero types is not well-defined
 impl_nonzero!(
 	NonZeroU8,
 	NonZeroU16,
