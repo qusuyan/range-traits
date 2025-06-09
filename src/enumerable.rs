@@ -70,3 +70,30 @@ macro_rules! impl_float {
 }
 
 impl_float!(f32, f64);
+
+macro_rules! impl_nonzero {
+	($($ty:ident),*) => {
+		$(
+			impl PartialEnum for $ty {
+				fn pred(&self) -> Option<Self> {
+					self.get().checked_sub(1).and_then($ty::new)
+				}
+
+				fn succ(&self) -> Option<Self> {
+					self.checked_add(1)
+				}
+			}
+		)*
+	};
+}
+
+use core::num::{NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize};
+
+impl_nonzero!(
+	NonZeroU8,
+	NonZeroU16,
+	NonZeroU32,
+	NonZeroU64,
+	NonZeroU128,
+	NonZeroUsize
+);
